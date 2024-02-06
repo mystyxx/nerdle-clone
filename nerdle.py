@@ -4,8 +4,8 @@ def newEquation():
     a = randint(1, 20)
     b = randint(1, 10)
 
-    operators = ['*', '+', '-']
     operator = randint(0,3)
+    operators = ['*', '+', '-']
 
 
     if operator == 0:
@@ -27,6 +27,9 @@ class notAnEquation(Exception):
 class lettersInGuess(Exception):
     "Raised when there are something other than numbers and operators in the guess"
     pass
+class guessDoesNotCompute(Exception):
+    "Raised when the guess is mathematically incorrect"
+    pass
 
 def main(guesses):
 
@@ -42,6 +45,9 @@ def main(guesses):
         raise IndexError
     elif '=' not in answer:
         raise notAnEquation
+    splittedAnswer = answer.split('=')
+    if eval(splittedAnswer[0]) != int(splittedAnswer[1]):
+        raise guessDoesNotCompute 
     
     for i in range(len(answer)):
         if answer[i] not in allowedchar:
@@ -74,5 +80,8 @@ while guesses<5:
         pass
     except lettersInGuess:
         print("Guess must contain only ints and operators, except / and % !")
+        pass
+    except guessDoesNotCompute:
+        print("Guess doesn't compute !")
         pass
 print("You lost !")
